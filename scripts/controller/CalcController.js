@@ -20,9 +20,43 @@ class CalcController {
 
     }
 
+    /**
+     * Metodo para dar crtl + v
+     * clipboardData este objeto tem um metodo chamdo de getData('Text')
+     * getData('Text') retorna um tipo de informação
+     */
+    pastFromClipboard(){
+
+        document.addEventListener('paste', e =>{
+
+            let text = e.clipboardData.getData('Text');
+
+            this.displayCalc = parseFloat(text);
+
+            console.log(this.displayCalc);
+
+        });
+
+    }
+
+    /**
+     * Metodo para ctrl + c
+     * execCommand('Copy') = copia tudo que esta selecionado
+     */
     copyToClipboard(){
 
-        
+        //Criando elemento na tela dinamicamente
+        let input = document.createElement('input');
+
+        input.value = this.displayCalc;
+
+        document.body.appendChild(input);
+
+        input.select();
+
+        document.execCommand('Copy');
+
+        input.remove();
 
     }
 
@@ -41,6 +75,7 @@ class CalcController {
         }, 1000); //Intervalo de tempo do refresh
 
         this.setLastNumberToDisplay();
+        this.pastFromClipboard();
 
     }
 
@@ -159,6 +194,10 @@ class CalcController {
 
                 case 'PageUp':
                     this.addOperation('9');
+                    break;
+                
+                case 'c':
+                    if (e.ctrlKey) this.copyToClipboard();
                     break;
 
             }
